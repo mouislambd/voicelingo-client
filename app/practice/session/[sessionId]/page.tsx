@@ -14,6 +14,8 @@ interface SpeechRecognition extends EventTarget {
   stop: () => void;
   onresult: (event: any) => void;
   onerror: (event: any) => void;
+  onstart?: (event: any) => void;
+  onend?: (event: any) => void;
 }
 declare global {
   interface Window {
@@ -36,8 +38,8 @@ export default function SessionPage() {
   // Refs to avoid stale closures
   const isConversationActiveRef = useRef(isConversationActive);
   const micStateRef = useRef(micState);
-  const sendMessageRef = useRef<(text: string) => Promise<void>>();
-  const speakRef = useRef<(text: string) => void>();
+  const sendMessageRef = useRef<(text: string) => Promise<void>>(async () => {});
+  const speakRef = useRef<(text: string) => void>(() => {});
 
   useEffect(() => { isConversationActiveRef.current = isConversationActive; }, [isConversationActive]);
   useEffect(() => { micStateRef.current = micState; }, [micState]);
