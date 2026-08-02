@@ -29,11 +29,6 @@ export default function LoginPage() {
     await signIn.social({ provider: "google" });
   };
 
-  const handleDemoLogin = () => {
-    setEmail("demo@voicelingo.ai");
-    setPassword("demo1234");
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg border border-gray-100">
@@ -69,12 +64,6 @@ export default function LoginPage() {
             className="w-full bg-accent text-primary p-3 rounded-lg font-semibold hover:bg-opacity-80"
           >
             Continue with Google
-          </button>
-          <button
-            onClick={handleDemoLogin}
-            className="w-full border border-primary text-primary p-3 rounded-lg font-semibold hover:bg-gray-50"
-          >
-            Try Demo Account
           </button>
         </div>
         <p className="mt-4 text-center text-sm text-gray-600">
