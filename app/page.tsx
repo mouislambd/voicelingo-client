@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TryItLive from "@/components/TryItLive";
+import { useSession } from "@/src/lib/auth-client";
 
 export default function LandingPage() {
+  const { data: session } = useSession();
+  const authLink = session ? "/practice" : "/register";
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
@@ -14,10 +20,10 @@ export default function LandingPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English with Confidence</h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
-              Practice real conversations with AI, get instant grammar and pronunciation feedback no judgment, just growth.
+              Practice real conversations with AI, get instant grammar and pronunciation feedback — no judgment, just growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/register" className="bg-[#B5B9F0] text-[#0B0909] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
+              <Link href={authLink} className="bg-[#B5B9F0] text-[#0B0909] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
                 Start Practicing
               </Link>
               <a href="#how-it-works" className="border border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition">
@@ -27,7 +33,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <TryItLive />
+        {/* Conditionally render TryItLive for logged-out users */}
+        {!session && <TryItLive />}
 
         {/* How It Works Section */}
         <section id="how-it-works" className="py-20 px-6 max-w-6xl mx-auto">
@@ -47,6 +54,12 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+          {/* Mini-CTA */}
+          <div className="text-center mt-12">
+            <Link href={authLink} className="text-[#2E4540] font-bold text-lg hover:underline">
+              Ready to start? {session ? "Go to practice" : "Sign up and try it"}
+            </Link>
+          </div>
         </section>
 
         {/* Features Section */}
@@ -57,14 +70,22 @@ export default function LandingPage() {
               {[
                 { title: "Real-time Voice", desc: "Speak directly with AI." },
                 { title: "AI-Powered Feedback", desc: "Uses Groq Llama 3.3 for accuracy." },
-                { title: "Track Your Progress", desc: "Monitor weak areas and scores." },
+                { title: "Track Your Progress", desc: "Monitor weak areas and scores.", link: session ? "/dashboard" : undefined },
                 { title: "Practice Anytime", desc: "Session history at your fingertips." },
               ].map((feature, i) => (
-                <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                  <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
-                  <h3 className="font-bold text-[#0B0909] mb-2">{feature.title}</h3>
-                  <p className="text-gray-600 text-sm">{feature.desc}</p>
-                </div>
+                feature.link ? (
+                    <Link href={feature.link} key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 block hover:shadow-md transition">
+                      <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
+                      <h3 className="font-bold text-[#0B0909] mb-2">{feature.title}</h3>
+                      <p className="text-gray-600 text-sm">{feature.desc}</p>
+                    </Link>
+                ) : (
+                    <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                      <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
+                      <h3 className="font-bold text-[#0B0909] mb-2">{feature.title}</h3>
+                      <p className="text-gray-600 text-sm">{feature.desc}</p>
+                    </div>
+                )
               ))}
             </div>
           </div>
@@ -73,8 +94,8 @@ export default function LandingPage() {
         {/* CTA Section */}
         <section className="py-20 px-6 text-center">
           <h2 className="text-4xl font-bold text-[#0B0909] mb-8">Ready to improve your spoken English?</h2>
-          <Link href="/register" className="bg-[#B5B9F0] text-[#0B0909] px-10 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
-            Get Started Free
+          <Link href={authLink} className="bg-[#B5B9F0] text-[#0B0909] px-10 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
+            {session ? "Start Practicing" : "Get Started Free"}
           </Link>
         </section>
       </main>
