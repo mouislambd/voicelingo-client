@@ -55,7 +55,7 @@ export default function SessionPage() {
     setMessages((prev) => [...prev, newMessage]);
 
     try {
-      const res = await api.post("/api/practice/message", { sessionId, message: text });
+      const res = await api.post("/practice/message", { sessionId, message: text });
       const aiReply = { role: "ai", content: res.data.reply, feedback: res.data.feedback };
       setMessages((prev) => [...prev, aiReply]);
       speakRef.current?.(res.data.reply);

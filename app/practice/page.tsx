@@ -19,7 +19,7 @@ export default function PracticePage() {
 
   useEffect(() => {
     if (session) {
-    api.get("/api/topics")
+    api.get("/topics")
         .then((res) => {
           console.log("Full Topics API Response Data:", JSON.stringify(res.data, null, 2));
           // Assuming it might be res.data.topics, or res.data.data, or just res.data
@@ -37,7 +37,7 @@ export default function PracticePage() {
 
   const startPractice = async (topicId: string) => {
     try {
-      const res = await api.post("/api/practice/start", { topicId });
+      const res = await api.post("/practice/start", { topicId });
       router.push(`/practice/session/${res.data.sessionId}`);
     } catch (error) {
       console.error("Failed to start session", error);

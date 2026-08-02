@@ -24,10 +24,10 @@ export default function DashboardPage() {
     if (session) {
       const fetchData = async () => {
         try {
-          const [progressRes, historyRes] = await Promise.all([
-            api.get("/api/practice/progress"),
-            api.get("/api/practice/history"),
-          ]);
+            const [progressRes, historyRes] = await Promise.all([
+              api.get("/practice/progress"),
+              api.get("/practice/history"),
+            ]);
           console.log("Fetched history data:", historyRes.data);
           setStats({
             ...progressRes.data,
@@ -50,7 +50,7 @@ export default function DashboardPage() {
 
     console.log("Attempting to delete session:", sessionId);
     try {
-      const response = await api.delete(`/api/practice/session/${sessionId}`);
+      const response = await api.delete(`/practice/session/${sessionId}`);
       console.log("Delete session API response:", response.data);
       setHistory((prev) => prev.filter((s) => s._id !== sessionId));
       setStats((prev: any) => ({ ...prev, totalSessions: Math.max(0, prev.totalSessions - 1) }));

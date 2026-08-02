@@ -30,7 +30,7 @@ export default function SessionSummaryPage() {
       try {
         setLoading(true);
         console.log("Calling endSession API with sessionId:", sessionId);
-        const res = await api.post("/api/practice/end", { sessionId });
+        const res = await api.post("/practice/end", { sessionId });
         console.log("End session API response:", JSON.stringify(res.data, null, 2));
         setSummary(res.data);
       } catch (err: any) {

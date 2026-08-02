@@ -12,7 +12,7 @@ export default function HistoryDetailPage() {
 
   useEffect(() => {
     if (sessionId) {
-      api.get(`/api/practice/session/${sessionId}`).then((res) => setSession(res.data)).catch(console.error);
+      api.get(`/practice/session/${sessionId}`).then((res) => setSession(res.data)).catch(console.error);
     }
   }, [sessionId]);
 
