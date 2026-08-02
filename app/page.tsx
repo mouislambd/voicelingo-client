@@ -14,7 +14,7 @@ export default function LandingPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English with Confidence</h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
-              Practice real conversations with AI, get instant grammar and pronunciation feedback — no judgment, just growth.
+              Practice real conversations with AI, get instant grammar and pronunciation feedback no judgment, just growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register" className="bg-[#B5B9F0] text-[#0B0909] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
