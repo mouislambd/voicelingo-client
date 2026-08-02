@@ -7,6 +7,7 @@ import { api } from "@/src/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import RecommendationCard from "@/components/RecommendationCard";
 
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
@@ -74,6 +75,8 @@ export default function DashboardPage() {
             Start New Practice
           </Link>
         </div>
+
+        <RecommendationCard />
 
         {stats && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
