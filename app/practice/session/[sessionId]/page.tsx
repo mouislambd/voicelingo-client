@@ -4,25 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/src/lib/auth-client";
 import { api } from "@/src/lib/api";
-
-// Web Speech API interfaces
-interface SpeechRecognition extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start: () => void;
-  stop: () => void;
-  onresult: (event: any) => void;
-  onerror: (event: any) => void;
-  onstart?: (event: any) => void;
-  onend?: (event: any) => void;
-}
-declare global {
-  interface Window {
-    SpeechRecognition: { new (): SpeechRecognition };
-    webkitSpeechRecognition: { new (): SpeechRecognition };
-  }
-}
+import { SpeechRecognition } from "@/src/types/speech";
 
 export default function SessionPage() {
   const { sessionId } = useParams();
