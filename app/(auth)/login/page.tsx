@@ -8,12 +8,14 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("handleLogin: Submitting form with email:", email);
     setError("");
+    setLoading(true);
     try {
       console.log("handleLogin: Calling signIn.email");
       await signIn.email({ email, password });
@@ -22,11 +24,19 @@ export default function LoginPage() {
     } catch (err: any) {
       console.error("handleLogin: Error during signIn.email:", err);
       setError(err.message || "Failed to sign in");
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
-    await signIn.social({ provider: "google" });
+    console.log("handleGoogleLogin: Clicked");
+    setLoading(true);
+    try {
+      await signIn.social({ provider: "google" });
+    } catch (err) {
+      console.error("handleGoogleLogin: Error:", err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,6 +52,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent outline-none"
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -50,20 +61,23 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent outline-none"
             required
+            disabled={loading}
           />
           <button
             type="submit"
-            className="w-full bg-primary text-white p-3 rounded-lg font-semibold hover:opacity-90"
+            className="w-full bg-primary text-white p-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50"
+            disabled={loading}
           >
-            Sign In
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
         <div className="mt-4 space-y-2">
           <button
             onClick={handleGoogleLogin}
-            className="w-full bg-accent text-primary p-3 rounded-lg font-semibold hover:bg-opacity-80"
+            className="w-full bg-accent text-primary p-3 rounded-lg font-semibold hover:bg-opacity-80 disabled:opacity-50"
+            disabled={loading}
           >
-            Continue with Google
+            {loading ? "Redirecting..." : "Continue with Google"}
           </button>
         </div>
         <p className="mt-4 text-center text-sm text-gray-600">
