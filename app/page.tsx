@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TryItLive from "@/components/TryItLive";
 
 export default function LandingPage() {
   return (
@@ -25,6 +26,8 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        <TryItLive />
 
         {/* How It Works Section */}
         <section id="how-it-works" className="py-20 px-6 max-w-6xl mx-auto">
