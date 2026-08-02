@@ -12,6 +12,7 @@ export default function RecommendationCard() {
     const fetchRecommendation = async () => {
       try {
         const res = await api.get("/practice/recommendation");
+        console.log("Recommendation API response:", res.data);
         setRecommendation(res.data);
       } catch (err) {
         console.error("Failed to fetch recommendation", err);
