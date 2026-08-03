@@ -1,5 +1,6 @@
 "use client";
 
+import CustomPracticeSection from "@/components/CustomPracticeSection";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -35,6 +36,8 @@ export default function LandingPage() {
 
         {/* Conditionally render TryItLive for logged-out users */}
         {!session && <TryItLive />}
+
+        <CustomPracticeSection />
 
         {/* How It Works Section */}
         <section id="how-it-works" className="py-20 px-6 max-w-6xl mx-auto">
