@@ -19,7 +19,7 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="bg-[#2E4540] text-white py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English with Confidence</h1>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English with Ease</h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
               Practice real conversations with AI, get instant grammar and pronunciation feedback  no judgment, just growth.
             </p>
