@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/src/lib/auth-client";
 import { api } from "@/src/lib/api";
 import Navbar from "@/components/Navbar";
 
-export default function PracticePage() {
+function PracticeContent() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [topics, setTopics] = useState<any[]>([]);
+  const [isAutoStarting, setIsAutoStarting] = useState(false);
+  const [autoStartError, setAutoStartError] = useState(false);
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -19,11 +22,8 @@ export default function PracticePage() {
 
   useEffect(() => {
     if (session) {
-    api.get("/topics")
+      api.get("/topics")
         .then((res) => {
-          console.log("Full Topics API Response Data:", JSON.stringify(res.data, null, 2));
-          // Assuming it might be res.data.topics, or res.data.data, or just res.data
-          // Let's log it and find out
           const topics = Array.isArray(res.data?.topics) ? res.data.topics : 
                          Array.isArray(res.data?.data) ? res.data.data : 
                          Array.isArray(res.data) ? res.data : [];
@@ -35,16 +35,39 @@ export default function PracticePage() {
     }
   }, [session]);
 
-  const startPractice = async (topicId: string) => {
+  const startPractice = async (topicId: string, focusArea?: string) => {
     try {
-      const res = await api.post("/practice/start", { topicId });
+      const res = await api.post("/practice/start", { topicId, focusArea });
       router.push(`/practice/session/${res.data.sessionId}`);
     } catch (error) {
       console.error("Failed to start session", error);
+      throw error;
     }
   };
 
+  useEffect(() => {
+    const topicId = searchParams.get("topic");
+    const focus = searchParams.get("focus");
+
+    if (topicId && focus && !isAutoStarting && !autoStartError) {
+      setIsAutoStarting(true);
+      startPractice(topicId, focus)
+        .catch(() => {
+          setIsAutoStarting(false);
+          setAutoStartError(true);
+        });
+    }
+  }, [searchParams, isAutoStarting, autoStartError, router]);
+
   if (isPending || !session) return null;
+
+  if (isAutoStarting) {
+    return (
+      <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center">
+        <p className="text-gray-600">Starting your recommended session...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
@@ -72,5 +95,13 @@ export default function PracticePage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function PracticePage() {
+  return (
+    <Suspense fallback={null}>
+      <PracticeContent />
+    </Suspense>
   );
 }
