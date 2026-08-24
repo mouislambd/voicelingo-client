@@ -9,6 +9,7 @@ export default function TryItLive() {
   const [feedback, setFeedback] = useState<{ feedback: string; hasMistake: boolean; correctedText?: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const isRecognitionActiveRef = useRef(false);
 
   const exampleSentences = [
     "I want to improve my English skills.",
@@ -33,6 +34,7 @@ export default function TryItLive() {
       setMicState("Listening...");
       setError(null);
       setFeedback(null);
+      isRecognitionActiveRef.current = true;
     };
 
     recognition.onresult = async (event) => {
@@ -66,13 +68,18 @@ export default function TryItLive() {
     };
     
     recognition.onend = () => {
+        isRecognitionActiveRef.current = false;
         if (micState === "Listening...") setMicState("idle");
     };
   }, [micState]);
 
   const toggleMic = () => {
-    if (micState === "idle") {
-      recognitionRef.current?.start();
+    if (micState === "idle" && !isRecognitionActiveRef.current) {
+      try {
+        recognitionRef.current?.start();
+      } catch (e) {
+        console.error("Recognition start failed", e);
+      }
     } else if (micState === "Listening...") {
       recognitionRef.current?.stop();
       setMicState("idle");

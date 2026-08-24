@@ -16,6 +16,7 @@ export default function SessionPage() {
   const [error, setError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const isSpeakingRef = useRef(false);
+  const isRecognitionActiveRef = useRef(false);
 
   // Refs to avoid stale closures
   const isConversationActiveRef = useRef(isConversationActive);
@@ -44,7 +45,7 @@ export default function SessionPage() {
     } catch (err) {
       console.warn("API practice message failed:", err);
       // Restart only if conversation is still supposed to be active
-      if (isConversationActiveRef.current) {
+      if (isConversationActiveRef.current && !isRecognitionActiveRef.current) {
         setMicState("Listening...");
         try {
           recognitionRef.current?.start();
@@ -66,7 +67,7 @@ export default function SessionPage() {
     utterance.onend = () => {
       isSpeakingRef.current = false;
       console.log("AI finished speaking. State transition: Listening...");
-      if (isConversationActiveRef.current) {
+      if (isConversationActiveRef.current && !isRecognitionActiveRef.current) {
         try {
           recognitionRef.current?.start();
         } catch (e) {
@@ -96,6 +97,7 @@ export default function SessionPage() {
     recognition.onstart = () => {
       console.log("State transition: Listening...");
       setMicState("Listening...");
+      isRecognitionActiveRef.current = true;
     };
 
     recognition.onresult = (event) => {
@@ -125,10 +127,11 @@ export default function SessionPage() {
 
     recognition.onend = () => {
       console.log("Recognition ended.");
+      isRecognitionActiveRef.current = false;
       // Added a small delay before checking if we should restart
       setTimeout(() => {
         console.log("Restart check:", { active: isConversationActiveRef.current, speaking: isSpeakingRef.current, state: micStateRef.current });
-        if (isConversationActiveRef.current && !isSpeakingRef.current && micStateRef.current !== "Thinking...") {
+        if (isConversationActiveRef.current && !isSpeakingRef.current && micStateRef.current !== "Thinking..." && !isRecognitionActiveRef.current) {
           try {
             console.log("Attempting to restart recognition...");
             recognition.start();
@@ -152,10 +155,12 @@ export default function SessionPage() {
     } else {
       setIsConversationActive(true);
       setError(null);
-      try {
-        recognitionRef.current?.start();
-      } catch (e) {
-        console.log("Recognition already started");
+      if (!isRecognitionActiveRef.current) {
+        try {
+          recognitionRef.current?.start();
+        } catch (e) {
+          console.log("Recognition already started");
+        }
       }
     }
   };
