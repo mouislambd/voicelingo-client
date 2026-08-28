@@ -16,6 +16,7 @@ export default function LandingPage() {
       <Navbar />
 
       <main className="flex-grow">
+      
         {/* Hero Section */}
         <section className="bg-[#2E4540] text-white py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
