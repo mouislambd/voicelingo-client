@@ -8,60 +8,63 @@ import { api } from "@/src/lib/api";
 export default function CustomPracticeSection() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("text");
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [context, setContext] = useState("");
+  const [activeTab, setActiveTab] = useState<"text" | "voice">("text");
+  const [topic, setTopic] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Web Speech API
+  const [isListening, setIsListening] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image (jpg, png, webp).");
+  const startListening = () => {
+    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+    if (!SpeechRecognition) {
+      setError("Speech recognition not supported in this browser.");
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      setError("File is too large. Maximum size is 5MB.");
-      return;
-    }
-
+    
     setError(null);
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setTopic(transcript);
+    };
+    recognition.onerror = (event: any) => {
+        console.error(event);
+        setIsListening(false);
+        setError("Error recognizing speech.");
+    };
+
+    recognition.start();
   };
 
-  const toBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  const handlePhotoSubmit = async () => {
+  const handleStartSession = async () => {
     if (!session) {
       router.push("/register");
       return;
     }
-    if (!image) return;
+    if (!topic.trim()) {
+        setError("Please enter a topic.");
+        return;
+    }
 
     setLoading(true);
     setError(null);
 
     try {
-      const base64Image = (await toBase64(image)).split(",")[1];
-      const res = await api.post("/practice/custom-start-image", {
-        imageBase64: base64Image,
-        context,
+      const res = await api.post("/practice/start", {
+        topic: topic,
+        level: "intermediate"
       });
       router.push(`/practice/session/${res.data.sessionId}`);
     } catch (err: any) {
-      setError(err.response?.data?.error || "Failed to analyze photo. Please try again.");
+      setError(err.response?.data?.message || "Failed to start session.");
     } finally {
       setLoading(false);
     }
@@ -72,10 +75,10 @@ export default function CustomPracticeSection() {
       <h2 className="text-4xl font-bold text-[#0B0909] text-center mb-10">Custom Topic Practice</h2>
       
       <div className="flex justify-center gap-4 mb-8">
-        {["text", "voice", "photo"].map((tab) => (
+        {["text", "voice"].map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => setActiveTab(tab as "text" | "voice")}
             className={`px-6 py-2 rounded-full font-bold capitalize ${activeTab === tab ? "bg-[#2E4540] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
           >
             {tab}
@@ -84,40 +87,31 @@ export default function CustomPracticeSection() {
       </div>
 
       <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100">
-        {activeTab === "photo" && (
-          <div className="space-y-6">
-            <div 
-              onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 rounded-2xl p-10 text-center cursor-pointer hover:border-[#2E4540] transition"
-            >
-              {preview ? (
-                <img src={preview} alt="Preview" className="max-h-48 mx-auto rounded-lg" />
-              ) : (
-                <p className="text-gray-500">Click to upload or drag & drop a photo (JPG, PNG, WebP, max 5MB)</p>
-              )}
-              <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/*" className="hidden" />
-            </div>
+        <textarea 
+          value={topic} 
+          onChange={(e) => setTopic(e.target.value)}
+          placeholder="Enter a topic..."
+          className="w-full p-4 rounded-xl border border-gray-200 mb-4"
+        />
 
-            <textarea 
-              value={context} 
-              onChange={(e) => setContext(e.target.value)}
-              placeholder="Add context (optional) - e.g., 'this is from my vacation'"
-              className="w-full p-4 rounded-xl border border-gray-200"
-            />
-
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-
+        {activeTab === "voice" && (
             <button 
-              onClick={handlePhotoSubmit}
-              disabled={loading || !image}
-              className="w-full bg-[#B5B9F0] text-[#0B0909] py-4 rounded-full font-bold hover:bg-[#a1a5e0] transition disabled:opacity-50"
+                onClick={startListening}
+                className={`w-full py-4 mb-4 rounded-full font-bold ${isListening ? "bg-red-500 text-white" : "bg-gray-200 text-[#0B0909]"}`}
             >
-              {loading ? "Analyzing your photo..." : "Create Practice Session from This Photo"}
+                {isListening ? "Listening..." : "Click to Speak"}
             </button>
-          </div>
         )}
-        {/* Placeholder for other tabs */}
-        {activeTab !== "photo" && <p className="text-center text-gray-500">{activeTab} input coming soon</p>}
+
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        <button 
+          onClick={handleStartSession}
+          disabled={loading || !topic.trim()}
+          className="w-full bg-[#B5B9F0] text-[#0B0909] py-4 rounded-full font-bold hover:bg-[#a1a5e0] transition disabled:opacity-50"
+        >
+          {loading ? "Starting..." : "Create Practice Session"}
+        </button>
       </div>
     </section>
   );
