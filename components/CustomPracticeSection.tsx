@@ -24,10 +24,50 @@ export default function CustomPracticeSection() {
 
   // Voice tab state
   const [messages, setMessages] = useState<Message[]>([]);
-  const [micState, setMicState] = useState<"idle" | "Listening..." | "Analyzing..." | "Speaking...">("idle");
+  const [isConversationActive, setIsConversationActive] = useState(false);
+  const [micState, setMicState] = useState<"idle" | "Listening..." | "Thinking..." | "Speaking...">("idle");
   const recognitionRef = useRef<any>(null);
-  const speakRef = useRef<(text: string) => void>(() => {});
   const isSpeakingRef = useRef(false);
+  const isRecognitionActiveRef = useRef(false);
+  const isConversationActiveRef = useRef(isConversationActive);
+  const micStateRef = useRef(micState);
+  
+  const sendMessageRef = useRef<(text: string) => Promise<void>>(async () => {});
+  const speakRef = useRef<(text: string) => void>(() => {});
+
+  useEffect(() => { isConversationActiveRef.current = isConversationActive; }, [isConversationActive]);
+  useEffect(() => { micStateRef.current = micState; }, [micState]);
+
+  const sendMessage = async (text: string) => {
+    setMicState("Thinking...");
+    setMessages((prev) => [...prev, { role: "user", text }]);
+
+    try {
+      const response = await fetch("/api/demo/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      
+      if (!response.ok) throw new Error("Failed to get feedback.");
+      
+      const data = await response.json();
+      setMessages((prev) => [...prev, { role: "ai", text: data.feedback, feedback: data }]);
+      speakRef.current(data.feedback);
+    } catch (err: any) {
+      setError(err.message || "An error occurred.");
+      if (isConversationActiveRef.current && !isRecognitionActiveRef.current) {
+        setMicState("Listening...");
+        try {
+          recognitionRef.current?.start();
+        } catch (e) {
+          console.log("Recognition start failed after error:", e);
+        }
+      } else {
+        setMicState("idle");
+      }
+    }
+  };
 
   const speak = (text: string) => {
     isSpeakingRef.current = true;
@@ -36,74 +76,93 @@ export default function CustomPracticeSection() {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.onend = () => {
       isSpeakingRef.current = false;
-      setMicState("idle");
+      if (isConversationActiveRef.current && !isRecognitionActiveRef.current) {
+        try {
+          recognitionRef.current?.start();
+        } catch (e) {
+          console.log("Recognition already started");
+        }
+      }
     };
     window.speechSynthesis.speak(utterance);
   };
   
+  useEffect(() => { sendMessageRef.current = sendMessage; }, [sendMessage]);
   useEffect(() => { speakRef.current = speak; }, [speak]);
 
   useEffect(() => {
-    if (activeTab === "voice") {
-        if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
-            setError("Voice input not supported in this browser.");
-            return;
-        }
-        const Recognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-        recognitionRef.current = new Recognition();
-        const recognition = recognitionRef.current;
-        
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = "en-US";
+    if (activeTab !== "voice") return;
+    
+    if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
+        setError("Voice input not supported in this browser.");
+        return;
+    }
+    const Recognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    recognitionRef.current = new Recognition();
+    const recognition = recognitionRef.current;
+    
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
 
-        recognition.onstart = () => {
-            setMicState("Listening...");
-            setError(null);
-        };
+    recognition.onstart = () => {
+        setMicState("Listening...");
+        isRecognitionActiveRef.current = true;
+    };
 
-        recognition.onresult = async (event: any) => {
-            const transcript = event.results[0][0].transcript;
-            setMessages(prev => [...prev, { role: "user", text: transcript }]);
-            setMicState("Analyzing...");
-            
-            try {
-                const response = await fetch("/api/demo/feedback", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text: transcript }),
-                });
-                
-                if (!response.ok) {
-                    throw new Error("Failed to get feedback.");
-                }
-                
-                const data = await response.json();
-                setMessages(prev => [...prev, { role: "ai", text: data.feedback, feedback: data }]);
-                speakRef.current(data.feedback);
-            } catch (err: any) {
-                setError(err.message || "An error occurred.");
-                setMicState("idle");
+    recognition.onresult = (event: any) => {
+        let finalTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript;
             }
-        };
+        }
 
-        recognition.onerror = (event: any) => {
+        if (finalTranscript) {
+            recognition.stop();
+            sendMessageRef.current?.(finalTranscript);
+        }
+    };
+
+    recognition.onerror = (event: any) => {
+        if (event.error !== 'no-speech') {
+            console.error("Speech recognition error:", event.error);
             setError(`Error: ${event.error}`);
             setMicState("idle");
-        };
-        
-        recognition.onend = () => {
-            if (micState === "Listening...") setMicState("idle");
-        };
-    }
+        }
+    };
+    
+    recognition.onend = () => {
+        isRecognitionActiveRef.current = false;
+        setTimeout(() => {
+            if (isConversationActiveRef.current && !isSpeakingRef.current && micStateRef.current !== "Thinking..." && !isRecognitionActiveRef.current) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log("Recognition error on restart:", e);
+                }
+            }
+        }, 500);
+    };
   }, [activeTab]);
 
-  const toggleMic = () => {
-    if (micState === "idle") {
-        recognitionRef.current?.start();
-    } else if (micState === "Listening...") {
-        recognitionRef.current?.stop();
-        setMicState("idle");
+  const toggleConversation = () => {
+    if (isConversationActive) {
+      recognitionRef.current?.stop();
+      setIsConversationActive(false);
+      setMicState("idle");
+      window.speechSynthesis.cancel();
+      isSpeakingRef.current = false;
+    } else {
+      setIsConversationActive(true);
+      setError(null);
+      if (!isRecognitionActiveRef.current) {
+        try {
+          recognitionRef.current?.start();
+        } catch (e) {
+          console.log("Recognition already started");
+        }
+      }
     }
   };
 
@@ -183,23 +242,25 @@ export default function CustomPracticeSection() {
                             )}
                         </div>
                     ))}
-                    {micState === "Analyzing..." && <p className="text-sm text-gray-500">Analyzing...</p>}
+                    {micState === "Thinking..." && <p className="text-sm text-gray-500">Thinking...</p>}
                 </div>
 
                 <button 
-                    onClick={toggleMic}
-                    disabled={micState === "Speaking..." || micState === "Analyzing..."}
-                    className={`w-full py-4 rounded-full font-bold ${
-                        micState === "Listening..." ? "bg-red-500 text-white" : 
-                        micState === "Speaking..." ? "bg-yellow-500 text-white" : 
-                        "bg-[#2E4540] text-white"
+                    onClick={toggleConversation}
+                    disabled={micState === "Thinking..."}
+                    className={`w-full py-4 rounded-full font-bold transition-all ${
+                        isConversationActive 
+                          ? "bg-red-500 hover:bg-red-600 text-white" 
+                          : "bg-[#2E4540] hover:bg-[#2E4540]/90 text-white"
                     }`}
                 >
-                    {micState === "Listening..." ? "Listening..." : 
-                     micState === "Speaking..." ? "Speaking..." : 
-                     micState === "Analyzing..." ? "Analyzing..." : 
-                     "Click to Speak"}
+                    {isConversationActive ? "End Conversation" : "Start Conversation"}
                 </button>
+                {micState !== "idle" && (
+                  <div className="text-center text-sm font-medium text-[#2E4540] animate-pulse">
+                    {micState}
+                  </div>
+                )}
                 {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
         )}
