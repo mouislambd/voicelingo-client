@@ -24,8 +24,24 @@ export default function CustomPracticeSection() {
 
   // Voice tab state
   const [messages, setMessages] = useState<Message[]>([]);
-  const [micState, setMicState] = useState<"idle" | "Listening..." | "Analyzing...">("idle");
+  const [micState, setMicState] = useState<"idle" | "Listening..." | "Analyzing..." | "Speaking...">("idle");
   const recognitionRef = useRef<any>(null);
+  const speakRef = useRef<(text: string) => void>(() => {});
+  const isSpeakingRef = useRef(false);
+
+  const speak = (text: string) => {
+    isSpeakingRef.current = true;
+    setMicState("Speaking...");
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => {
+      isSpeakingRef.current = false;
+      setMicState("idle");
+    };
+    window.speechSynthesis.speak(utterance);
+  };
+  
+  useEffect(() => { speakRef.current = speak; }, [speak]);
 
   useEffect(() => {
     if (activeTab === "voice") {
@@ -64,9 +80,9 @@ export default function CustomPracticeSection() {
                 
                 const data = await response.json();
                 setMessages(prev => [...prev, { role: "ai", text: data.feedback, feedback: data }]);
+                speakRef.current(data.feedback);
             } catch (err: any) {
                 setError(err.message || "An error occurred.");
-            } finally {
                 setMicState("idle");
             }
         };
@@ -172,9 +188,17 @@ export default function CustomPracticeSection() {
 
                 <button 
                     onClick={toggleMic}
-                    className={`w-full py-4 rounded-full font-bold ${micState === "Listening..." ? "bg-red-500 text-white" : "bg-[#2E4540] text-white"}`}
+                    disabled={micState === "Speaking..." || micState === "Analyzing..."}
+                    className={`w-full py-4 rounded-full font-bold ${
+                        micState === "Listening..." ? "bg-red-500 text-white" : 
+                        micState === "Speaking..." ? "bg-yellow-500 text-white" : 
+                        "bg-[#2E4540] text-white"
+                    }`}
                 >
-                    {micState === "Listening..." ? "Listening..." : "Click to Speak"}
+                    {micState === "Listening..." ? "Listening..." : 
+                     micState === "Speaking..." ? "Speaking..." : 
+                     micState === "Analyzing..." ? "Analyzing..." : 
+                     "Click to Speak"}
                 </button>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
