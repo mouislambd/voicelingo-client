@@ -72,24 +72,20 @@ export default function LandingPage() {
             <h2 className="text-4xl font-bold text-[#0B0909] text-center mb-16">Why VoiceLingo?</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { title: "Real-time Voice", desc: "Speak directly with AI." },
-                { title: "AI-Powered Feedback", desc: "Uses Groq Llama 3.3 for accuracy." },
-                { title: "Track Your Progress", desc: "Monitor weak areas and scores.", link: session ? "/dashboard" : undefined },
-                { title: "Practice Anytime", desc: "Session history at your fingertips." },
+                { title: "Real-time Voice", desc: "Speak directly with AI.", path: "/practice" },
+                { title: "AI-Powered Feedback", desc: "Uses Groq Llama 3.3 for accuracy.", path: "/practice" },
+                { title: "Track Your Progress", desc: "Monitor weak areas and scores.", path: "/dashboard" },
+                { title: "Practice Anytime", desc: "Session history at your fingertips.", path: "/dashboard" },
               ].map((feature, i) => (
-                feature.link ? (
-                    <Link href={feature.link} key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 block hover:shadow-md transition">
-                      <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
-                      <h3 className="font-bold text-[#0B0909] mb-2">{feature.title}</h3>
-                      <p className="text-gray-600 text-sm">{feature.desc}</p>
-                    </Link>
-                ) : (
-                    <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                      <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
-                      <h3 className="font-bold text-[#0B0909] mb-2">{feature.title}</h3>
-                      <p className="text-gray-600 text-sm">{feature.desc}</p>
-                    </div>
-                )
+                <Link 
+                    href={session ? feature.path : "/register"} 
+                    key={i} 
+                    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 block hover:shadow-lg hover:-translate-y-1 transform transition-all duration-200 cursor-pointer"
+                >
+                  <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
+                  <h3 className="font-bold text-[#0B0909] mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm">{feature.desc}</p>
+                </Link>
               ))}
             </div>
           </div>
