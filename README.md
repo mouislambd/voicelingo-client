@@ -1,3 +1,16 @@
+## Why VoiceLingo Was Built
+
+VoiceLingo isn't just an English practice app — it was built with resource-efficient, environmentally-conscious engineering in mind. Most apps hoard user data indefinitely, which drives up unnecessary storage and energy use in data centers. VoiceLingo was deliberately designed to move away from that:
+
+- Session data auto-deletes after 30 days via a MongoDB TTL index, so the database never accumulates unnecessary data
+- Users can also manually delete any session at any time — data control stays in the user's hands
+- Only what's genuinely needed long-term (overall progress, weak-area patterns) is kept permanently; everything else is temporary
+
+Alongside this, the core goals are:
+- Creating a judgment-free space for Bangladeshi students to practice spoken English
+- Real back-and-forth voice conversation, not just text-based exercises
+- Concrete feedback (score, weak areas) after every session so students know exactly what to improve
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
