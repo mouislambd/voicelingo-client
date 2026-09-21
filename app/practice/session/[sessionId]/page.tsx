@@ -59,6 +59,12 @@ export default function SessionPage() {
   };
 
   const speak = (text: string) => {
+    // Stop recognition before speaking to prevent feedback loop
+    if (isRecognitionActiveRef.current) {
+      console.log("Stopping recognition before speaking...");
+      recognitionRef.current?.stop();
+    }
+
     isSpeakingRef.current = true;
     setMicState("Speaking...");
     console.log("State transition: Speaking...");
@@ -66,14 +72,18 @@ export default function SessionPage() {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.onend = () => {
       isSpeakingRef.current = false;
-      console.log("AI finished speaking. State transition: Listening...");
-      if (isConversationActiveRef.current && !isRecognitionActiveRef.current) {
-        try {
-          recognitionRef.current?.start();
-        } catch (e) {
-          console.log("Recognition already started");
+      console.log("AI finished speaking. Adding delay before restarting listening...");
+      // Increased delay to 800ms to allow residual audio to dissipate on mobile
+      setTimeout(() => {
+        if (isConversationActiveRef.current && !isRecognitionActiveRef.current) {
+          try {
+            console.log("Restarting recognition after AI spoke.");
+            recognitionRef.current?.start();
+          } catch (e) {
+            console.log("Recognition start failed or already active:", e);
+          }
         }
-      }
+      }, 800);
     };
     window.speechSynthesis.speak(utterance);
   };
@@ -108,10 +118,15 @@ export default function SessionPage() {
         }
       }
 
-      if (finalTranscript) {
-        console.log("Final result received, sending to AI:", finalTranscript);
+      console.log("Result received. Transcript length:", finalTranscript.length, "Content:", finalTranscript);
+
+      // Add minimum length check (e.g., 3 characters) to avoid noise/echo
+      if (finalTranscript && finalTranscript.trim().length > 2) {
+        console.log("Final result valid, sending to AI:", finalTranscript);
         recognition.stop();
         sendMessageRef.current?.(finalTranscript);
+      } else if (finalTranscript) {
+        console.log("Ignoring short final result (likely noise/echo):", finalTranscript);
       }
     };
 
@@ -128,7 +143,7 @@ export default function SessionPage() {
     recognition.onend = () => {
       console.log("Recognition ended.");
       isRecognitionActiveRef.current = false;
-      // Added a small delay before checking if we should restart
+      // Added a delay before checking if we should restart (800ms)
       setTimeout(() => {
         console.log("Restart check:", { active: isConversationActiveRef.current, speaking: isSpeakingRef.current, state: micStateRef.current });
         if (isConversationActiveRef.current && !isSpeakingRef.current && micStateRef.current !== "Thinking..." && !isRecognitionActiveRef.current) {
@@ -139,7 +154,7 @@ export default function SessionPage() {
             console.log("Recognition already started or error:", e);
           }
         }
-      }, 500);
+      }, 800);
     };
   }, []);
 
