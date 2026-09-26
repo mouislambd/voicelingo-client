@@ -7,16 +7,16 @@ import Footer from "@/components/Footer";
 import TryItLive from "@/components/TryItLive";
 import { useSession } from "@/src/lib/auth-client";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const HeroMicVisual = dynamic(() => import("@/components/HeroMicVisual"), { ssr: false });
 
-const sectionVariants = {
+const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-const gridVariants = {
+const gridVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
@@ -26,7 +26,7 @@ const gridVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 };
