@@ -81,8 +81,6 @@ export default function LandingPage() {
           </motion.div>
         )}
 
-        <StatsSection />
-
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -182,6 +180,8 @@ export default function LandingPage() {
             {session ? "Start Practicing" : "Get Started Free"}
           </Link>
         </motion.section>
+
+        <StatsSection />
       </main>
 
       <Footer />
