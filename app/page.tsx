@@ -50,7 +50,7 @@ export default function LandingPage() {
             className="max-w-4xl mx-auto text-center relative z-10"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={sectionVariants}
           >
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English Fearlessly</h1>
@@ -73,7 +73,7 @@ export default function LandingPage() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={sectionVariants}
           >
             <TryItLive />
@@ -83,7 +83,7 @@ export default function LandingPage() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           <CustomPracticeSection />
@@ -95,12 +95,15 @@ export default function LandingPage() {
           className="py-20 px-6 max-w-6xl mx-auto"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           <h2 className="text-4xl font-bold text-[#0B0909] text-center mb-16">How It Works</h2>
           <motion.div 
             className="grid md:grid-cols-3 gap-10"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
             variants={gridVariants}
           >
             {[
@@ -130,13 +133,16 @@ export default function LandingPage() {
           className="py-20 px-6 bg-[#F9FAFB]"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl font-bold text-[#0B0909] text-center mb-16">Why VoiceLingo?</h2>
             <motion.div 
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
               variants={gridVariants}
             >
               {[
@@ -165,7 +171,7 @@ export default function LandingPage() {
           className="py-20 px-6 text-center"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           <h2 className="text-4xl font-bold text-[#0B0909] mb-8">Ready to improve your spoken English?</h2>
