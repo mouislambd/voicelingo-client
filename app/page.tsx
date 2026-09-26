@@ -6,11 +6,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TryItLive from "@/components/TryItLive";
 import StatsSection from "@/components/StatsSection";
+import ClosingLearningVisual from "@/components/ClosingLearningVisual";
 import { useSession } from "@/src/lib/auth-client";
 import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
 
 const HeroMicVisual = dynamic(() => import("@/components/HeroMicVisual"), { ssr: false });
+const ClosingVisual = dynamic(() => import("@/components/ClosingLearningVisual"), { ssr: false });
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -182,6 +184,27 @@ export default function LandingPage() {
         </motion.section>
 
         <StatsSection />
+
+        {/* Closing Section */}
+        <motion.section 
+          className="py-20 px-6 bg-white border-t border-gray-100"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={sectionVariants}
+        >
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
+            <div className="md:w-1/2 text-center md:text-left">
+              <h2 className="text-4xl font-bold text-[#0B0909] mb-6">Your English Journey Starts Here</h2>
+              <Link href={authLink} className="inline-block bg-[#B5B9F0] text-[#0B0909] px-10 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
+                {session ? "Start Practicing" : "Get Started Free"}
+              </Link>
+            </div>
+            <div className="md:w-1/2">
+              <ClosingVisual />
+            </div>
+          </div>
+        </motion.section>
       </main>
 
       <Footer />
