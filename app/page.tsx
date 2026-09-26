@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TryItLive from "@/components/TryItLive";
+import StatsSection from "@/components/StatsSection";
 import { useSession } from "@/src/lib/auth-client";
 import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
@@ -79,6 +80,8 @@ export default function LandingPage() {
             <TryItLive />
           </motion.div>
         )}
+
+        <StatsSection />
 
         <motion.div
           initial="hidden"
