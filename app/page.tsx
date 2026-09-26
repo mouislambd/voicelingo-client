@@ -6,6 +6,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TryItLive from "@/components/TryItLive";
 import { useSession } from "@/src/lib/auth-client";
+import dynamic from "next/dynamic";
+
+const HeroMicVisual = dynamic(() => import("@/components/HeroMicVisual"), { ssr: false });
 
 export default function LandingPage() {
   const { data: session } = useSession();
@@ -18,8 +21,11 @@ export default function LandingPage() {
       <main className="flex-grow">
       
         {/* Hero Section */}
-        <section className="bg-[#2E4540] text-white py-20 px-6">
-          <div className="max-w-4xl mx-auto text-center">
+        <section className="bg-[#2E4540] text-white py-20 px-6 relative overflow-hidden">
+          <div className="absolute inset-0 z-0 opacity-20">
+             <HeroMicVisual />
+          </div>
+          <div className="max-w-4xl mx-auto text-center relative z-10">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English Fearlessly</h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
               Practice real conversations with AI, get instant grammar and pronunciation feedback  no judgment, just growth.
