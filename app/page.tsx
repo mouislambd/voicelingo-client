@@ -196,7 +196,7 @@ export default function LandingPage() {
               }}
             >
               <Image 
-                src="/images/mission-visual.png" 
+                src="/mission-visual.png" 
                 alt="VoiceLingo Mission" 
                 width={600} 
                 height={500} 
