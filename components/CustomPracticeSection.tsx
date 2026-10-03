@@ -208,43 +208,16 @@ export default function CustomPracticeSection() {
         ))}
       </div>
 
-      <style jsx>{`
-        .glowing-border {
-          position: relative;
-          background: white;
-          border-radius: 1.5rem;
-          padding: 1px;
-        }
-        .glowing-border::before {
-          content: "";
-          position: absolute;
-          inset: -2px;
-          border-radius: 1.6rem;
-          background: conic-gradient(from 0deg, #B5B9F0, transparent 40%, transparent 60%, #B5B9F0);
-          animation: rotate 3s linear infinite;
-          opacity: 0.5;
-          transition: opacity 0.3s ease;
-        }
-        .glowing-border:focus-within::before {
-          opacity: 1;
-          animation: rotate 1.5s linear infinite;
-        }
-        @keyframes rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-
       <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100">
         
         {activeTab === "text" && (
             <>
-                <div className="glowing-border mb-4">
+                <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] focus-within:border-[#2E4540] transition-colors mb-4">
                   <textarea 
                     value={topic} 
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="Enter a topic..."
-                    className="w-full p-4 rounded-xl border border-transparent focus:outline-none"
+                    className="w-full p-4 rounded-xl bg-transparent focus:outline-none"
                   />
                 </div>
                 
@@ -262,8 +235,8 @@ export default function CustomPracticeSection() {
 
         {activeTab === "voice" && (
             <div className="space-y-4">
-                <div className="glowing-border mb-4">
-                  <div className="h-64 overflow-y-auto bg-white p-4 rounded-xl border border-transparent space-y-4">
+                <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] p-4 mb-4">
+                  <div className="h-64 overflow-y-auto bg-white rounded-xl space-y-4">
                       {messages.map((msg, i) => (
                           <div key={i} className={`p-3 rounded-lg ${msg.role === "user" ? "bg-blue-100 ml-auto w-fit" : "bg-green-100 mr-auto w-fit"}`}>
                               <p>{msg.text}</p>
