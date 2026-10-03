@@ -238,10 +238,17 @@ export default function CustomPracticeSection() {
                 <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] p-4 mb-4">
                   <div className="h-64 overflow-y-auto bg-white rounded-xl space-y-4">
                       {messages.map((msg, i) => (
-                          <div key={i} className={`p-3 rounded-lg ${msg.role === "user" ? "bg-blue-100 ml-auto w-fit" : "bg-green-100 mr-auto w-fit"}`}>
+                          <div 
+                            key={i} 
+                            className={`p-4 rounded-2xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-md ${
+                                msg.role === "user" 
+                                    ? "bg-white border-[#B5B9F0] ml-auto w-fit" 
+                                    : "bg-[#2E4540] text-white mr-auto w-fit"
+                            }`}
+                          >
                               <p>{msg.text}</p>
                               {msg.feedback && msg.feedback.correctedText && (
-                                  <p className="text-xs text-green-700 italic mt-1">Correction: {msg.feedback.correctedText}</p>
+                                  <p className="text-xs text-[#B5B9F0] italic mt-1">Correction: {msg.feedback.correctedText}</p>
                               )}
                           </div>
                       ))}
