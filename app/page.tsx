@@ -244,16 +244,31 @@ export default function LandingPage() {
 
         {/* CTA Section */}
         <motion.section 
-          className="py-20 px-6 text-center"
+          className="relative py-20 px-6 text-center overflow-hidden"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
-          <h2 className="text-4xl font-bold text-[#0B0909] mb-8">Ready to improve your spoken English?</h2>
-          <Link href={authLink} className="bg-[#B5B9F0] text-[#0B0909] px-10 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
-            {session ? "Start Practicing" : "Get Started Free"}
-          </Link>
+          {/* Background Video */}
+          <video
+            src="/video2.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-[#0B0909]/60 z-10" />
+
+          <div className="relative z-20">
+            <h2 className="text-4xl font-bold text-white mb-8">Ready to improve your spoken English?</h2>
+            <Link href={authLink} className="bg-[#B5B9F0] text-[#0B0909] px-10 py-4 rounded-full font-bold text-lg hover:bg-[#a1a5e0] transition">
+              {session ? "Start Practicing" : "Get Started Free"}
+            </Link>
+          </div>
         </motion.section>
 
         <StatsSection />
