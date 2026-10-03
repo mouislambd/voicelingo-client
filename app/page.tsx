@@ -43,21 +43,20 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      <main className="flex-grow pt-[40px]"> {/* Reduced padding for tighter spacing below Navbar */}
+      <main className="flex-grow pt-0"> {/* Removed pt to eliminate gap for sticky Navbar */}
       
         {/* Hero Section */}
         <section className="relative text-white py-32 px-6 overflow-hidden">
           {/* Background Video */}
           <video
+            src="/hero-video.mp4"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
             className="absolute inset-0 w-full h-full object-cover z-0"
-          >
-            <source src="/hero-video.mp4" type="video/mp4" />
-          </video>
+          />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-[#0B0909]/60 z-10" />
           
