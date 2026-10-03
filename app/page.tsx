@@ -43,7 +43,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="flex-grow pt-[72px]"> <!-- Added pt-[72px] for sticky Navbar height -->
       
         {/* Hero Section */}
         <section className="bg-[#2E4540] text-white py-20 px-6 relative overflow-hidden">
