@@ -2,6 +2,7 @@
 
 import CustomPracticeSection from "@/components/CustomPracticeSection";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TryItLive from "@/components/TryItLive";
@@ -166,6 +167,68 @@ export default function LandingPage() {
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+        </motion.section>
+
+        {/* Why We Built This Section */}
+        <motion.section 
+          className="py-20 px-6 bg-white"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={sectionVariants}
+        >
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            {/* Image side */}
+            <div 
+              className="relative rounded-2xl overflow-hidden shadow-2xl shadow-[#B5B9F0]/20 transition-transform duration-300 ease-out"
+              style={{
+                perspective: "1000px"
+              }}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-(y * 10)}deg)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+              }}
+            >
+              <Image 
+                src="/images/mission-visual.png" 
+                alt="VoiceLingo Mission" 
+                width={600} 
+                height={500} 
+                className="w-full h-auto object-cover"
+              />
+            </div>
+            
+            {/* Content side */}
+            <div>
+              <h2 className="text-4xl font-bold text-[#0B0909] mb-6">Why We Built This</h2>
+              <p className="text-lg text-gray-600 mb-10">We believe language learning shouldn't be stressful or transactional. Here's why we created VoiceLingo.</p>
+              
+              <div className="space-y-8">
+                {[
+                  { title: "Judgment-Free Practice", desc: "Practicing English should feel safe, not stressful." },
+                  { title: "Mindful by Design", desc: "Session data auto-deletes after 30 days; we don't hoard what we don't need." },
+                  { title: "Real Conversations", desc: "Not drills, actual back-and-forth voice practice with feedback." },
+                ].map((item, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="relative p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:border-[#B5B9F0] transition-all duration-300 cursor-default"
+                    style={{ marginTop: i === 0 ? "0" : i === 1 ? "2rem" : "4rem" }}
+                  >
+                    <div className="absolute top-2 right-4 text-6xl font-bold text-[#B5B9F0]/10 select-none pointer-events-none">
+                      0{i + 1}
+                    </div>
+                    <h3 className="text-xl font-bold text-[#0B0909] mb-2 relative z-10">{item.title}</h3>
+                    <p className="text-gray-600 relative z-10">{item.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.section>
 
