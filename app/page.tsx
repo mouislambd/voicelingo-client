@@ -43,13 +43,24 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      <main className="flex-grow pt-[72px]"> <!-- Added pt-[72px] for sticky Navbar height -->
+      <main className="flex-grow pt-[72px]"> {/* Added pt-[72px] for sticky Navbar height */}
       
         {/* Hero Section */}
-        <section className="bg-[#2E4540] text-white py-20 px-6 relative overflow-hidden">
-          <div className="absolute inset-0 z-0 opacity-20">
-             <HeroMicVisual />
-          </div>
+        <section className="relative text-white py-32 px-6 overflow-hidden">
+          {/* Background Video */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover -z-10"
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-[#0B0909]/60 -z-10" />
+          
           <motion.div 
             className="max-w-4xl mx-auto text-center relative z-10"
             initial="hidden"
