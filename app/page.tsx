@@ -55,7 +55,7 @@ export default function LandingPage() {
             loop
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0 bg-gradient-to-br from-[#2E4540] to-[#0B0909]"
           />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-[#0B0909]/60 z-10" />
