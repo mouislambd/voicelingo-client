@@ -193,35 +193,35 @@ export default function CustomPracticeSection() {
   };
 
   return (
-    <section className="py-20 px-6 bg-white max-w-4xl mx-auto">
-      <h2 className="text-4xl font-bold text-[#0B0909] text-center mb-10">Custom Topic Practice</h2>
+    <section className="py-20 px-6 max-w-4xl mx-auto">
+      <h2 className="text-4xl font-bold text-white text-center mb-10">Custom Topic Practice</h2>
       
       <div className="flex justify-center gap-4 mb-8">
         {["text", "voice"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as "text" | "voice")}
-            className={`px-6 py-2 rounded-full font-bold capitalize ${activeTab === tab ? "bg-[#2E4540] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            className={`px-6 py-2 rounded-full font-bold capitalize ${activeTab === tab ? "bg-[#2E4540] text-white" : "bg-[#2a3a34] text-gray-300 hover:bg-[#3d554e]"}`}
           >
             {tab}
           </button>
         ))}
       </div>
 
-      <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100">
+      <div className="bg-[#B5B9F0]/10 p-8 rounded-3xl border-2 border-[#0B0909]">
         
         {activeTab === "text" && (
             <>
-                <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] focus-within:border-[#2E4540] transition-colors mb-4">
+                <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] focus-within:border-white transition-colors mb-4">
                   <textarea 
                     value={topic} 
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="Enter a topic..."
-                    className="w-full p-4 rounded-xl bg-transparent focus:outline-none"
+                    className="w-full p-4 rounded-xl bg-transparent text-white focus:outline-none placeholder:text-gray-400"
                   />
                 </div>
                 
-                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
                 <button 
                   onClick={handleStartSession}
@@ -236,13 +236,13 @@ export default function CustomPracticeSection() {
         {activeTab === "voice" && (
             <div className="space-y-4">
                 <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] p-4 mb-4">
-                  <div className="h-64 overflow-y-auto bg-white rounded-xl space-y-4">
+                  <div className="h-64 overflow-y-auto bg-[#1a2420] rounded-xl p-4 space-y-4">
                       {messages.map((msg, i) => (
                           <div 
                             key={i} 
                             className={`p-4 rounded-2xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-md ${
                                 msg.role === "user" 
-                                    ? "bg-white border-[#B5B9F0] ml-auto w-fit" 
+                                    ? "bg-[#2a3a34] border-[#B5B9F0] text-white ml-auto w-fit" 
                                     : "bg-[#2E4540] text-white mr-auto w-fit"
                             }`}
                           >
@@ -252,7 +252,7 @@ export default function CustomPracticeSection() {
                               )}
                           </div>
                       ))}
-                      {micState === "Thinking..." && <p className="text-sm text-gray-500">Thinking...</p>}
+                      {micState === "Thinking..." && <p className="text-sm text-gray-400">Thinking...</p>}
                   </div>
                 </div>
 
@@ -268,11 +268,11 @@ export default function CustomPracticeSection() {
                     {isConversationActive ? "End Conversation" : "Start Conversation"}
                 </button>
                 {micState !== "idle" && (
-                  <div className="text-center text-sm font-medium text-[#2E4540] animate-pulse">
+                  <div className="text-center text-sm font-medium text-[#B5B9F0] animate-pulse">
                     {micState}
                   </div>
                 )}
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+                {error && <p className="text-red-400 text-sm">{error}</p>}
             </div>
         )}
       </div>
