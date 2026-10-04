@@ -208,7 +208,7 @@ export default function CustomPracticeSection() {
         ))}
       </div>
 
-      <div className="bg-[#B5B9F0]/10 p-8 rounded-3xl border-2 border-[#0B0909]">
+      <div className="bg-[#B5B9F0]/10 p-8 rounded-3xl animate-border-pulse">
         
         {activeTab === "text" && (
             <>

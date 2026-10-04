@@ -6,21 +6,19 @@ export default function Footer() {
   return (
     <footer className="bg-[#2E4540]/50 backdrop-blur-sm text-white p-8 border-t border-white/10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex items-center gap-6">
-            <FloatingLearningVisual />
-            <div className="scale-125">
-              <Logo />
-            </div>
+        <div className="scale-125">
+          <Logo />
         </div>
         <p className="text-gray-200">© 2026 VoiceLingo. All rights reserved.</p>
         <div className="flex gap-6">
           <a href="/about" className="text-white hover:text-[#B5B9F0] transition">About</a>
           <a href="/contact" className="text-white hover:text-[#B5B9F0] transition">Contact</a>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <Github size={20} className="text-white hover:text-[#B5B9F0] cursor-pointer transition" />
           <Twitter size={20} className="text-white hover:text-[#B5B9F0] cursor-pointer transition" />
           <Linkedin size={20} className="text-white hover:text-[#B5B9F0] cursor-pointer transition" />
+          <FloatingLearningVisual />
         </div>
       </div>
     </footer>
