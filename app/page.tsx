@@ -213,7 +213,7 @@ export default function LandingPage() {
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
             {/* Image side */}
             <div 
-              className="relative rounded-2xl overflow-hidden shadow-2xl shadow-[#B5B9F0]/20 transition-transform duration-300 ease-out h-[300px] md:h-[500px] lg:h-[600px]"
+              className="relative rounded-2xl overflow-hidden shadow-2xl shadow-[#B5B9F0]/20 transition-transform duration-300 ease-out h-[300px] md:h-[500px] lg:h-[600px] border-4 animate-border-pulse"
               style={{
                 perspective: "1000px"
               }}
