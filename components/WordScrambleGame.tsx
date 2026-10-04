@@ -84,7 +84,7 @@ export default function WordScrambleGame() {
       `}</style>
       
       <h2 className="text-3xl font-bold text-[#0B0909] text-center mb-2">Quick Challenge: Unscramble</h2>
-      <p className="text-center text-gray-600 mb-2">Test your vocabulary — no sign-up needed</p>
+      <p className="text-center text-gray-600 mb-2">Test your vocabulary  no sign-up needed</p>
       <p className="text-center text-sm text-[#2E4540] mb-8 font-medium">Tap letters to spell the word. Tap your guess to remove.</p>
       
       <div className={`p-8 bg-white rounded-3xl border-2 transition-colors ${shake ? "animate-shake" : ""} ${success ? "border-green-400" : "border-[#B5B9F0]"}`}>
