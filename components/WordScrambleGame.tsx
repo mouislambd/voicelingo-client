@@ -84,14 +84,14 @@ export default function WordScrambleGame() {
         .animate-pop { animation: pop 0.4s ease-out; }
       `}</style>
       
-      <h2 className="text-3xl font-bold text-[#0B0909] text-center mb-2">Quick Challenge: Unscramble</h2>
-      <p className="text-center text-gray-600 mb-2">Test your vocabulary  no sign-up needed</p>
-      <p className="text-center text-sm text-[#2E4540] mb-8 font-medium">Tap letters to spell the word. Tap your guess to remove.</p>
+      <h2 className="text-3xl font-bold text-white text-center mb-2">Quick Challenge: Unscramble</h2>
+      <p className="text-center text-gray-300 mb-2">Test your vocabulary  no sign-up needed</p>
+      <p className="text-center text-sm text-[#B5B9F0] mb-8 font-medium">Tap letters to spell the word. Tap your guess to remove.</p>
       
-      <div className={`p-8 bg-white rounded-3xl border-2 transition-colors ${shake ? "animate-shake" : ""} ${success ? "border-green-400" : "border-[#B5B9F0]"}`}>
+      <div className={`p-8 bg-[#1a2420] rounded-3xl border-2 transition-colors ${shake ? "animate-shake" : ""} ${success ? "border-green-400" : "border-white/10"}`}>
         
         {success && (
-            <div className="absolute inset-0 flex items-center justify-center z-10 bg-white/50 backdrop-blur-sm rounded-3xl animate-pop text-6xl">
+            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/50 backdrop-blur-sm rounded-3xl animate-pop text-6xl">
                 {emoji}
             </div>
         )}
@@ -118,10 +118,10 @@ export default function WordScrambleGame() {
 
         <div className="flex gap-4 justify-center">
           <button onClick={checkGuess} className="bg-[#2E4540] text-white px-8 py-2 rounded-full font-bold hover:bg-[#1a2b27] transition">Check</button>
-          <button onClick={nextWord} className="bg-gray-200 text-gray-700 px-8 py-2 rounded-full font-bold hover:bg-gray-300 transition">Skip</button>
+          <button onClick={nextWord} className="bg-gray-700 text-white px-8 py-2 rounded-full font-bold hover:bg-gray-600 transition">Skip</button>
         </div>
       </div>
-      <p className="text-center mt-4 font-bold text-[#2E4540]">Words Solved: {score}</p>
+      <p className="text-center mt-4 font-bold text-white">Words Solved: {score}</p>
     </section>
   );
 }

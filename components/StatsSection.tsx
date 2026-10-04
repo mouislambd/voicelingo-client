@@ -53,19 +53,19 @@ export default function StatsSection() {
   if (error) return null;
 
   return (
-    <section ref={ref} className="py-16 bg-white border-y border-gray-100">
+    <section ref={ref} className="py-16">
       <div className="max-w-4xl mx-auto px-6 grid md:grid-cols-2 gap-8">
-        <div className="text-center p-8 bg-[#F9FAFB] rounded-2xl border border-gray-100">
-          <div className="text-4xl font-bold text-[#2E4540] mb-2">
+        <div className="text-center p-8 bg-[#1a2420] rounded-2xl border border-white/10">
+          <div className="text-4xl font-bold text-[#B5B9F0] mb-2">
             <Counter end={stats.totalUsers} isVisible={isVisible} />
           </div>
-          <div className="text-[#0B0909] font-medium">Learners Practicing</div>
+          <div className="text-white font-medium">Learners Practicing</div>
         </div>
-        <div className="text-center p-8 bg-[#F9FAFB] rounded-2xl border border-gray-100">
-          <div className="text-4xl font-bold text-[#2E4540] mb-2">
+        <div className="text-center p-8 bg-[#1a2420] rounded-2xl border border-white/10">
+          <div className="text-4xl font-bold text-[#B5B9F0] mb-2">
             <Counter end={stats.totalSessions} isVisible={isVisible} />
           </div>
-          <div className="text-[#0B0909] font-medium">Conversations Completed</div>
+          <div className="text-white font-medium">Conversations Completed</div>
         </div>
       </div>
     </section>
