@@ -41,6 +41,7 @@ export default function WordScrambleGame() {
   }, []);
 
   const handleTileClick = (letter: string, index: number) => {
+    console.log("Tile clicked:", letter, "at index:", index);
     setGuess([...guess, letter]);
     setScrambled(scrambled.filter((_, i) => i !== index));
   };
