@@ -1,6 +1,7 @@
 "use client";
 
 import CustomPracticeSection from "@/components/CustomPracticeSection";
+import WordScrambleGame from "@/components/WordScrambleGame";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -107,6 +108,9 @@ export default function LandingPage() {
         >
           <CustomPracticeSection />
         </motion.div>
+
+        {/* Word Scramble Game */}
+        <WordScrambleGame />
 
         {/* How It Works Section */}
         <motion.section 
