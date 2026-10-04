@@ -1,12 +1,16 @@
 import { Github, Twitter, Linkedin } from "lucide-react";
 import Logo from "./Logo";
+import FloatingLearningVisual from "./FloatingLearningVisual";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2E4540] text-white p-8">
+    <footer className="bg-[#2E4540]/50 backdrop-blur-sm text-white p-8 border-t border-white/10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="scale-125">
-          <Logo />
+        <div className="flex items-center gap-6">
+            <FloatingLearningVisual />
+            <div className="scale-125">
+              <Logo />
+            </div>
         </div>
         <p className="text-gray-200">© 2026 VoiceLingo. All rights reserved.</p>
         <div className="flex gap-6">
