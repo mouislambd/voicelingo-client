@@ -190,7 +190,7 @@ export default function LandingPage() {
                 >
                   <Link 
                       href={session ? feature.path : "/register"} 
-                      className="bg-[#2a3a34] p-6 rounded-2xl shadow-sm border-2 border-white/10 hover:border-[#B5B9F0] block hover:shadow-lg hover:-translate-y-2 transform transition-all duration-300 cursor-pointer"
+                      className="bg-[#2a3a34] p-6 rounded-2xl shadow-sm border-2 border-[#B5B9F0] block hover:shadow-lg hover:-translate-y-2 transform transition-all duration-300 cursor-pointer"
                   >
                     <div className="w-10 h-10 bg-[#B5B9F0]/20 rounded-lg mb-4" />
                     <h3 className="font-bold text-white mb-2">{feature.title}</h3>
