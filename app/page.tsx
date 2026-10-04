@@ -136,7 +136,13 @@ export default function LandingPage() {
               { title: "Speak Naturally", desc: "Talk using your microphone, AI listens in real-time." },
               { title: "Get Instant Feedback", desc: "Receive grammar corrections, pronunciation tips, and a score." },
             ].map((step, index) => (
-              <motion.div key={index} className="text-center" variants={cardVariants}>
+              <motion.div 
+                key={index} 
+                className="text-center" 
+                variants={cardVariants}
+                animate={{ y: [0, -10, 0] }}
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: index * 0.5 }}
+              >
                 <div className="w-16 h-16 bg-[#B5B9F0] text-[#0B0909] rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                   {index + 1}
                 </div>
@@ -176,7 +182,12 @@ export default function LandingPage() {
                 { title: "Track Your Progress", desc: "Monitor weak areas and scores.", path: "/dashboard" },
                 { title: "Practice Anytime", desc: "Session history at your fingertips.", path: "/dashboard" },
               ].map((feature, i) => (
-                <motion.div key={i} variants={cardVariants}>
+                <motion.div 
+                    key={i} 
+                    variants={cardVariants}
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: i * 0.3 }}
+                >
                   <Link 
                       href={session ? feature.path : "/register"} 
                       className="bg-[#2a3a34] p-6 rounded-2xl shadow-sm border-2 border-white/10 hover:border-[#B5B9F0] block hover:shadow-lg hover:-translate-y-2 transform transition-all duration-300 cursor-pointer"
