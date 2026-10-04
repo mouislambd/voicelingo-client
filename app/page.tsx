@@ -13,6 +13,7 @@ import { useSession } from "@/src/lib/auth-client";
 import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
 import AnimatedGradientBackground from "@/components/AnimatedGradientBackground";
+import DimensionalBackground from "@/components/DimensionalBackground";
 
 const HeroMicVisual = dynamic(() => import("@/components/HeroMicVisual"), { ssr: false });
 const ClosingVisual = dynamic(() => import("@/components/ClosingLearningVisual"), { ssr: false });
@@ -42,8 +43,8 @@ export default function LandingPage() {
   const authLink = session ? "/practice" : "/register";
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0909]">
-      <AnimatedGradientBackground />
+    <div className="min-h-screen flex flex-col">
+      <DimensionalBackground />
       <Navbar />
 
       <main className="flex-grow pt-0"> {/* Removed pt to eliminate gap for sticky Navbar */}
