@@ -59,7 +59,7 @@ export default function LandingPage() {
           />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-[#0B0909]/60 z-10" />
-          
+
           {/* 3D Mic Visual (placed above video and overlay) */}
           <div className="absolute inset-0 flex items-center justify-center z-20 opacity-20 pointer-events-none">
             <HeroMicVisual />
@@ -67,6 +67,10 @@ export default function LandingPage() {
 
           <motion.div 
             className="max-w-4xl mx-auto text-center relative z-30"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={sectionVariants}
           >
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Speak English Fearlessly</h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
