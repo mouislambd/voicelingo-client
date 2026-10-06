@@ -35,6 +35,7 @@ export default function Navbar() {
             {session ? (
               <>
                 <Link href="/practice" className="hover:text-[#B5B9F0] transition-colors">Practice</Link>
+                <Link href="/learning" className="hover:text-[#B5B9F0] transition-colors">Learning</Link>
                 <Link href="/dashboard" className="hover:text-[#B5B9F0] transition-colors">Dashboard</Link>
                 <button onClick={() => signOut()} className="hover:text-[#B5B9F0] transition-colors">Logout</button>
               </>
@@ -53,6 +54,7 @@ export default function Navbar() {
             {session ? (
               <>
                 <Link href="/practice" className="block hover:text-[#B5B9F0]">Practice</Link>
+                <Link href="/learning" className="block hover:text-[#B5B9F0]">Learning</Link>
                 <Link href="/dashboard" className="block hover:text-[#B5B9F0]">Dashboard</Link>
                 <button onClick={() => signOut()} className="block hover:text-[#B5B9F0]">Logout</button>
               </>
