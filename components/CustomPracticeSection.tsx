@@ -236,7 +236,7 @@ export default function CustomPracticeSection() {
         {activeTab === "voice" && (
             <div className="space-y-4">
                 <div className="border-2 border-[#B5B9F0] rounded-xl shadow-[0_0_15px_rgba(181,185,240,0.3)] p-4 mb-4">
-                  <div className="h-64 overflow-y-auto bg-[#1a2420] rounded-xl p-4 space-y-4">
+                  <div className="h-64 overflow-y-auto bg-[#1a2420] rounded-xl p-4 space-y-4 text-white">
                       {messages.map((msg, i) => (
                           <div 
                             key={i} 
@@ -246,7 +246,7 @@ export default function CustomPracticeSection() {
                                     : "bg-[#2E4540] text-white mr-auto w-fit"
                             }`}
                           >
-                              <p>{msg.text}</p>
+                              <p className="text-white">{msg.text}</p>
                               {msg.feedback && msg.feedback.correctedText && (
                                   <p className="text-xs text-[#B5B9F0] italic mt-1">Correction: {msg.feedback.correctedText}</p>
                               )}
