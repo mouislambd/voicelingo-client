@@ -1,6 +1,5 @@
 import { Github, Twitter, Linkedin } from "lucide-react";
 import Logo from "./Logo";
-import FloatingLearningVisual from "./FloatingLearningVisual";
 
 export default function Footer() {
   return (
@@ -18,7 +17,6 @@ export default function Footer() {
           <Github size={20} className="text-white hover:text-[#B5B9F0] cursor-pointer transition" />
           <Twitter size={20} className="text-white hover:text-[#B5B9F0] cursor-pointer transition" />
           <Linkedin size={20} className="text-white hover:text-[#B5B9F0] cursor-pointer transition" />
-          <FloatingLearningVisual />
         </div>
       </div>
     </footer>
