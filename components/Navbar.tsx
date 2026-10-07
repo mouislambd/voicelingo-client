@@ -23,7 +23,7 @@ export default function Navbar() {
           100% { background-position: 0% 50%; }
         }
       `}</style>
-      <nav className="sticky top-0 nav-gradient text-white border-b border-white/10 py-2 px-4 z-50">
+      <nav className="sticky top-0 nav-gradient text-white border-b border-white/10 py-1 px-4 z-50">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
           <Link href="/">
             <div className="brightness-200 contrast-125">
