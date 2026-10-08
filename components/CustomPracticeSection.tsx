@@ -70,6 +70,8 @@ export default function CustomPracticeSection() {
   };
 
   const speak = (text: string) => {
+    console.log("speak called with:", text);
+    console.log("Voices available:", speechSynthesis.getVoices().length);
     isSpeakingRef.current = true;
     setMicState("Speaking...");
     
@@ -217,7 +219,7 @@ export default function CustomPracticeSection() {
                     value={topic} 
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="Enter a topic..."
-                    className="w-full p-4 rounded-xl bg-transparent text-white focus:outline-none placeholder:text-gray-400"
+                    className="w-full p-4 rounded-xl bg-transparent text-[#0B0909] focus:outline-none placeholder:text-gray-500"
                   />
                 </div>
                 

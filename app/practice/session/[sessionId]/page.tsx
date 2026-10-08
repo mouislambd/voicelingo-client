@@ -59,6 +59,8 @@ export default function SessionPage() {
   };
 
   const speak = (text: string) => {
+    console.log("speak called with:", text);
+    console.log("Voices available:", speechSynthesis.getVoices().length);
     // Stop recognition before speaking to prevent feedback loop
     if (isRecognitionActiveRef.current) {
       console.log("Stopping recognition before speaking...");

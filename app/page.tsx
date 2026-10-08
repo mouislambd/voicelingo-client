@@ -43,7 +43,7 @@ export default function LandingPage() {
   const authLink = session ? "/practice" : "/register";
 
   return (
-    <div className="min-h-screen flex flex-col dark-depth-bg">
+    <div className="min-h-screen flex flex-col dark-depth-bg text-white">
       <Navbar />
 
       <main className="flex-grow pt-0"> {/* Removed pt to eliminate gap for sticky Navbar */}

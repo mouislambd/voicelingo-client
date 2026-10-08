@@ -95,14 +95,14 @@ function PracticeContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-2xl shadow-sm border-2 border-dashed border-[#B5B9F0] text-left">
             <h3 className="font-bold text-[#0B0909] text-xl mb-4">Create Your Own Topic</h3>
-            <input
-              type="text"
-              value={customTopic}
-              onChange={(e) => setCustomTopic(e.target.value)}
-              maxLength={150}
-              placeholder="e.g., Practice for my visa interview"
-              className="w-full p-2 border border-gray-200 rounded-lg mb-4 text-sm"
-            />
+              <input
+                type="text"
+                value={customTopic}
+                onChange={(e) => setCustomTopic(e.target.value)}
+                maxLength={150}
+                placeholder="e.g., Practice for my visa interview"
+                className="w-full p-2 border border-gray-200 rounded-lg mb-4 text-sm text-[#0B0909] placeholder:text-gray-500"
+              />
             <button
               onClick={handleCreateCustomTopic}
               disabled={isCreatingCustom || !customTopic.trim()}
